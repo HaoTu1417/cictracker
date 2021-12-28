@@ -1,0 +1,8 @@
+.maxVh {
+  height: 100vh;
+}
+
+.header.ant-layout-header {
+  color: red;
+  height: 25%;
+}

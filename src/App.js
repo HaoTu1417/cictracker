@@ -1,24 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import { Layout } from "antd";
+
+import SideBar from "./component/sideBar";
+import Header from "./component/header";
+import Filter from "./component/filter";
+import Tags from "./component/tags";
+
+import "font-awesome/css/font-awesome.css";
+import "./css/app.css";
+import "antd/dist/antd.css";
+const { Footer, Sider, Content } = Layout;
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Layout className="maxVh">
+      <SideBar />
+      <Layout>
+        <Header />
+        <Content>Content</Content>
+        <Footer>Footer</Footer>
+      </Layout>
+    </Layout>
   );
 }
 

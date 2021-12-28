@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <style>
+            table, th, td {
+                column-width: 100px;
+        border-collapse: collapse; 
+                border: 1px solid #c4dcf3  ;
+                border-width: 0px 0px 1px 0px;
+                
+        }
+        tbody tr:nth-child(odd){
+  background-color:  #eef7ff;
+  color: rgb(0, 0, 0);
+}
+        thead,tfoot{
+            background: #427fef;
+            color: white;
+            text-align: center;
+        }
+        tfoot{
+            font-weight: bold;
+        }
+    </style>
+    </head>
+    <body>
+        <table>
+            <thead>
+                <tr>
+                    <th>Country</th>
+                    <th>OrderID</th>
+                    <th>OrderAmount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>td1</td>
+                    <td>td2</td>
+                    <td>td3</td>
+                </tr>
+                <tr>
+                    <td>td1</td>
+                    <td>td2</td>
+                    <td>td3</td>
+                </tr>
+                <tr>
+                    <td>td1</td>
+                    <td>td2</td>
+                    <td>td3</td>
+                </tr>
+                <tr>
+                    <td>td1</td>
+                    <td>td2</td>
+                    <td>td3</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td>Total</td>
+                    <td colspan="2">td2</td>
+
+                </tr>
+
+            </tfoot>
+        </table>
+
+
+    </body>
+</html>
