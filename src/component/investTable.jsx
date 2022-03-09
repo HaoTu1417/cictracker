@@ -1,6 +1,6 @@
 import React from "react";
 import Table from "./common/table";
-
+import * as XLSX from "xlsx";
 import Style from "../css/investTable.css";
 
 const InvestTable = () => {
@@ -38,14 +38,34 @@ const InvestTable = () => {
     { path: "coinCurrentValue", label: "Giá trị hiện tại" },
     { path: "realizedValue", label: "Đã chốt" },
   ];
+  const onChange = (e) => {
+    console.log("onchange");
+    const [file] = e.target.files;
+    const reader = new FileReader();
+
+    reader.onload = (evt) => {
+      const bstr = evt.target.result;
+      const wb = XLSX.read(bstr, { type: "binary" });
+      const wsname = wb.SheetNames[0];
+      const ws = wb.Sheets[wsname];
+      const data = XLSX.utils.sheet_to_csv(ws, { header: 1 });
+      console.log(data);
+    };
+    reader.readAsBinaryString(file);
+  };
   return (
-    <Table
-      id="tableNgoai"
-      columns={columns}
-      data={data}
-      sortColumn={columns[0]}
-      style={Style}
-    />
+    <React.Fragment>
+      <Table
+        id="tableNgoai"
+        columns={columns}
+        data={data}
+        sortColumn={columns[0]}
+        style={Style}
+      />
+      <div>
+        <input type="file" id="myfile" onChange={onChange} />
+      </div>
+    </React.Fragment>
   );
 };
 
