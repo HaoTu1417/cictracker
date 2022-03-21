@@ -1,16 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import Table from "./common/table";
-import * as XLSX from "xlsx";
+
 import Style from "../css/investTable.css";
 
+import InvestTableData from "./investTableData";
+import investTableData from "./investTableData";
+import continuousColorLegend from "react-vis/dist/legends/continuous-color-legend";
+
 const InvestTable = () => {
-  const data = [
+  const [data, setData] = useState([
     {
       _id: 1,
       coinCode: "BTC",
       coinName: "Bitcoin",
       coinStatus: "Invest+",
       safetyPoint: 10,
+      group: "A",
       coinInvestment: 100,
       coinCurrentValue: 200,
       realizedValue: 500,
@@ -21,37 +26,46 @@ const InvestTable = () => {
       coinName: "Etherium",
       coinStatus: "Invest+",
       safetyPoint: 10,
+      group: "B",
       coinInvestment: 100,
       coinCurrentValue: 200,
       realizedValue: 500,
     },
-  ];
-  const columns = [
-    {
-      path: "coinCode",
-      label: "Mã Coin",
-    },
-    { path: "coinName", label: "Tên Coin" },
-    { path: "coinStatus", label: "Trạng Thái" },
-    { path: "safetyPoint", label: "Điểm An Toàn" },
-    { path: "coinInvestment", label: "Vốn" },
-    { path: "coinCurrentValue", label: "Giá trị hiện tại" },
-    { path: "realizedValue", label: "Đã chốt" },
-  ];
-  const onChange = (e) => {
-    console.log("onchange");
-    const [file] = e.target.files;
-    const reader = new FileReader();
+  ]);
+  const columns = InvestTableData.columns;
+  console.log("InvestTableData", InvestTableData.columns);
+  const handleReadFirstFileDone = (data) => {
+    const sortedData = data.sort((a, b) => {
+      if (a.safetyPoint > b.safetyPoint) {
+        return -1;
+      }
+      return 1;
+    });
+    setData(sortedData);
+  };
+  const handleReadSecondFileDone = (result) => {
+    console.log("data", data);
+    const oldData = [...data];
+    console.log("oldData", oldData);
+    result.forEach((element) => {
+      // const coin = oldData[element.coinCode];
+      const coin = oldData.filter((c) => {
+        return c.coinCode === element.coinCode;
+      });
+      console.log("coin:", coin);
+      if (coin && coin.length > 0) {
+        coin[0].realizedValue += element.realizedValue;
+      }
+    });
+    console.log("oldData", oldData);
+    setData(oldData);
+  };
 
-    reader.onload = (evt) => {
-      const bstr = evt.target.result;
-      const wb = XLSX.read(bstr, { type: "binary" });
-      const wsname = wb.SheetNames[0];
-      const ws = wb.Sheets[wsname];
-      const data = XLSX.utils.sheet_to_csv(ws, { header: 1 });
-      console.log(data);
-    };
-    reader.readAsBinaryString(file);
+  const onChange = (e) => {
+    investTableData.readFileToData(e, handleReadFirstFileDone);
+  };
+  const onChangeOfSecondFile = (e) => {
+    investTableData.readFileToData(e, handleReadSecondFileDone);
   };
   return (
     <React.Fragment>
@@ -64,6 +78,9 @@ const InvestTable = () => {
       />
       <div>
         <input type="file" id="myfile" onChange={onChange} />
+      </div>
+      <div>
+        <input type="file" id="myfile2" onChange={onChangeOfSecondFile} />
       </div>
     </React.Fragment>
   );
